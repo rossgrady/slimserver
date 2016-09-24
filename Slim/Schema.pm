@@ -917,7 +917,7 @@ sub _createOrUpdateAlbum {
 		}
 		
 		if ( !defined $_unknownAlbumId ) {
-			my $sortkey = Slim::Utils::Text::ignoreCaseArticles($noAlbum);
+			my $sortkey = Slim::Utils::Text::ignoreCaseArticles($noAlbum, 1);
 			
 			$albumHash = {
 				title       => $noAlbum,
@@ -1156,7 +1156,7 @@ sub _createOrUpdateAlbum {
 	}
 	
 	# Always normalize the sort, as ALBUMSORT could come from a TSOA tag.
-	$albumHash->{titlesort} = Slim::Utils::Text::ignoreCaseArticles( $attributes->{ALBUMSORT} || $title );
+	$albumHash->{titlesort} = Slim::Utils::Text::ignoreCaseArticles( $attributes->{ALBUMSORT} || $title , 1 );
 
 	# And our searchable version.
 	$albumHash->{titlesearch} = Slim::Utils::Text::ignoreCase($title, 1);
@@ -1877,7 +1877,7 @@ sub variousArtistsObject {
 		$vaObj  = $class->rs('Contributor')->update_or_create({
 			'name'       => $vaString,
 			'namesearch' => Slim::Utils::Text::ignoreCase($vaString, 1),
-			'namesort'   => Slim::Utils::Text::ignoreCaseArticles($vaString),
+			'namesort'   => Slim::Utils::Text::ignoreCaseArticles($vaString, 1),
 		}, { 'key' => 'namesearch' });
 
 		main::DEBUGLOG && $log->is_debug && $log->debug(sprintf("-- Created VARIOUS ARTIST (id: [%d])", $vaObj->id));
@@ -1886,7 +1886,7 @@ sub variousArtistsObject {
 	if ($vaObj && $vaObj->name ne $vaString) {
 
 		$vaObj->name($vaString);
-		$vaObj->namesort( Slim::Utils::Text::ignoreCaseArticles($vaString) );
+		$vaObj->namesort( Slim::Utils::Text::ignoreCaseArticles($vaString, 1) );
 		$vaObj->namesearch( Slim::Utils::Text::ignoreCase($vaString, 1) );
 		$vaObj->update;
 		
@@ -2521,10 +2521,10 @@ sub _preCheckAttributes {
 		$attributes->{'TITLESEARCH'} = Slim::Utils::Text::ignoreCase($attributes->{'TITLE'}, 1);
 	
 		if (!$attributes->{'TITLESORT'}) {
-			$attributes->{'TITLESORT'} = Slim::Utils::Text::ignoreCaseArticles($attributes->{'TITLE'});
+			$attributes->{'TITLESORT'} = Slim::Utils::Text::ignoreCaseArticles($attributes->{'TITLE'}, 1);
 		} else {
 			# Always normalize the sort, as TITLESORT could come from a TSOT tag.
-			$attributes->{'TITLESORT'} = Slim::Utils::Text::ignoreCaseArticles($attributes->{'TITLESORT'});
+			$attributes->{'TITLESORT'} = Slim::Utils::Text::ignoreCaseArticles($attributes->{'TITLESORT'}, 1);
 		}
 	}
 
@@ -2743,7 +2743,7 @@ sub _createGenre {
 		$_unknownGenre = eval {
 			$self->rs('Genre')->update_or_create({
 				'name'       => $genreName,
-				'namesort'   => Slim::Utils::Text::ignoreCaseArticles($genreName),
+				'namesort'   => Slim::Utils::Text::ignoreCaseArticles($genreName, 1),
 				'namesearch' => Slim::Utils::Text::ignoreCase($genreName, 1),
 			}, { 'key' => 'namesearch' });
 		};
@@ -2931,7 +2931,7 @@ sub _mergeAndCreateContributors {
 			my $name        = string('NO_ARTIST');
 			$_unknownArtist = $self->rs('Contributor')->update_or_create({
 				'name'       => $name,
-				'namesort'   => Slim::Utils::Text::ignoreCaseArticles($name),
+				'namesort'   => Slim::Utils::Text::ignoreCaseArticles($name, 1),
 				'namesearch' => Slim::Utils::Text::ignoreCase($name, 1),
 			}, { 'key' => 'namesearch' });
 

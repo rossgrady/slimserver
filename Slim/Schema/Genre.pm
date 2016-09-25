@@ -66,7 +66,7 @@ sub add {
 
 	for my $genreSub (Slim::Music::Info::splitTag($genre)) {
 
-		my $namesort = Slim::Utils::Text::ignoreCaseArticles($genreSub);
+		my $namesort = Slim::Utils::Text::ignoreCaseArticles($genreSub, 1);
 		my $namesearch = Slim::Utils::Text::ignoreCase($genreSub, 1);
 
 		# So that ucfirst() works properly.

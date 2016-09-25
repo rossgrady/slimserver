@@ -41,7 +41,7 @@ sub updateOrCreateFromResult {
 	$dirs =~ s{\\}{/}g;
 	my ($album) = $dirs =~ m{([^/]+)/$};
 	
-	my $sort = Slim::Utils::Text::ignoreCaseArticles($title);
+	my $sort = Slim::Utils::Text::ignoreCaseArticles($title, 1);
 	my $search = Slim::Utils::Text::ignoreCase($title, 1);
 	my $now = time();
 	my $creationDate = str2time($exifData->{DateTimeOriginal}) || str2time($exifData->{DateTime}) || $result->mtime || 0;

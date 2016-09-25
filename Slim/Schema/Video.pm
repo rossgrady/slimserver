@@ -26,7 +26,7 @@ sub updateOrCreateFromResult {
 	$title = $tags->{title} if $tags->{title}; # these keys should always be lowercase from ffmpeg
 	$album = $tags->{album} if $tags->{album};
 	
-	my $sort = Slim::Utils::Text::ignoreCaseArticles($title);
+	my $sort = Slim::Utils::Text::ignoreCaseArticles($title, 1);
 	my $search = Slim::Utils::Text::ignoreCase($title, 1);
 	my $now = time();
 	

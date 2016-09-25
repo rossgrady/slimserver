@@ -141,7 +141,7 @@ sub add {
 		# Bug 10324, we now match only the exact name
 		my $name   = $artistList[$i];
 		my $search = Slim::Utils::Text::ignoreCase($name, 1);
-		my $sort   = Slim::Utils::Text::ignoreCaseArticles(($sortedList[$i] || $name));
+		my $sort   = Slim::Utils::Text::ignoreCaseArticles(($sortedList[$i] || $name), 1);
 		my $mbid   = $brainzIDList[$i];
 		
 		my $sth = $dbh->prepare_cached( 'SELECT id FROM contributors WHERE name = ?' );
